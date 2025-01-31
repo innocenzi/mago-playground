@@ -27,15 +27,6 @@ export default function App() {
   const [selectedExample, setSelectedExample] = useState("");
   const [plugins, setPlugins] = useState([]);
   const [issues, setIssues] = useState([]);
-  const [darkMode, setDarkMode] = useState(() => {
-    const savedMode = localStorage.getItem("darkMode");
-    if (savedMode !== null) return savedMode === "true";
-    return window.matchMedia("(prefers-color-scheme: dark)").matches;
-  });
-
-  useEffect(() => {
-    localStorage.setItem("darkMode", darkMode);
-  }, [darkMode]);
 
   useEffect(() => {
     analyzeCode(code);
@@ -272,7 +263,7 @@ export default function App() {
   };
 
   return (
-    <div className={`app-container ${darkMode ? "dark" : "light"}`}>
+    <div className={`app-container`}>
       {renderSettingsPanel()}
 
       <div className={`main-panel`}>
@@ -312,14 +303,6 @@ export default function App() {
                 gap: "1rem",
               }}
             >
-              <div
-                className="theme-toggle"
-                onClick={() => setDarkMode((prev) => !prev)}
-                label="Toggle Dark/Light Mode"
-              >
-                {darkMode ? <FiSun /> : <FiMoon />}
-              </div>
-
               <a
                 className="github-icon"
                 href="https://github.com/carthage-software/mago"
@@ -349,7 +332,6 @@ export default function App() {
                   fontSize: 14,
                 }}
                 padding={16}
-                data-color-mode={darkMode ? "dark" : "light"}
               />
             </div>
           </div>
@@ -377,7 +359,6 @@ export default function App() {
                     fontSize: 14,
                   }}
                   padding={16}
-                  data-color-mode={darkMode ? "dark" : "light"}
                 />
               )}
             </div>

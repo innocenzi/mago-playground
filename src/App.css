@@ -1,28 +1,4 @@
-.app-container.light {
-    --color-bg: #fdfdfd;
-    --color-panel: #ffffff;
-    --color-text: #2b2b2b;
-    --color-border: rgba(0, 0, 0, 0.1);
-    --color-accent: #5577ff;
-    --color-accent-hover: #445bd4;
-    --color-error: #ff4f4f;
-    --color-warning: #f2a541;
-    --color-note: #5577ff;
-    --color-dim-text: #888888;
-    --color-highlight-bg: rgba(0, 0, 0, 0.06);
-    --color-subtle-bg: #fafafa;
-    --color-card-bg: #fff;
-    --color-help-bg: rgba(85, 119, 255, 0.15);
-    --color-help-text: #5577ff;
-
-    --font-size-base: 14px;
-    --border-radius: 0px;
-    --border-thickness: 1px;
-    --box-shadow: 0 4px 14px rgba(0, 0, 0, 0.07);
-    --color-panel-transparent: rgba(255, 255, 255, 0.7);
-}
-
-.app-container.dark {
+:root {
     --color-bg: #1e1e1e;
     --color-panel: #262626;
     --color-text: #cccccc;
@@ -45,20 +21,46 @@
     --color-panel-transparent: rgba(38, 38, 38, 0.7);
 }
 
+@media (prefers-color-scheme: light) {
+    :root {
+        --color-bg: #fdfdfd;
+        --color-panel: #ffffff;
+        --color-text: #2b2b2b;
+        --color-border: rgba(0, 0, 0, 0.1);
+        --color-accent: #5577ff;
+        --color-accent-hover: #445bd4;
+        --color-error: #ff4f4f;
+        --color-warning: #f2a541;
+        --color-note: #5577ff;
+        --color-dim-text: #888888;
+        --color-highlight-bg: rgba(0, 0, 0, 0.06);
+        --color-subtle-bg: #fafafa;
+        --color-card-bg: #fff;
+        --color-help-bg: rgba(85, 119, 255, 0.15);
+        --color-help-text: #5577ff;
+
+        --font-size-base: 14px;
+        --border-radius: 0px;
+        --border-thickness: 1px;
+        --box-shadow: 0 4px 14px rgba(0, 0, 0, 0.07);
+        --color-panel-transparent: rgba(255, 255, 255, 0.7);
+    }
+}
+
 html,
 body,
 #root,
 .app-container {
     margin: 0;
     padding: 0;
-    background: var(--color-bg);
-    color: var(--color-text);
     font-family: -apple-system, BlinkMacSystemFont, "Inter", "Segoe UI", Roboto,
         Helvetica, Arial, sans-serif;
-    font-size: var(--font-size-base);
     line-height: 1.4;
     height: 100%;
     overflow: auto;
+    background: var(--color-bg);
+    color: var(--color-text);
+    font-size: var(--font-size-base);
 }
 
 .app-container {
@@ -122,13 +124,11 @@ body,
 }
 
 .icon-button,
-.theme-toggle,
 .github-icon {
     transition: transform 0.2s ease-in-out;
 }
 
 .icon-button:hover,
-.theme-toggle:hover,
 .github-icon:hover {
     transform: scale(1.1);
 }
@@ -169,17 +169,6 @@ body,
     font-size: 0.9rem;
     outline: none;
     cursor: pointer;
-}
-
-.theme-toggle {
-    cursor: pointer;
-    font-size: 1.2rem;
-    color: var(--color-accent);
-    transition: color 0.2s;
-}
-
-.theme-toggle:hover {
-    color: var(--color-accent-hover);
 }
 
 .github-icon {
