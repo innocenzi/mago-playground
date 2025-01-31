@@ -198,8 +198,7 @@ body,
 }
 
 .settings-panel.open {
-    display: flex;
-    width: 300px;
+    display: block;
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
 }
 
