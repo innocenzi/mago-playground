@@ -92,8 +92,47 @@ function useEditorErrorDecorator(code, issues)
     return {markEditorAsInitialized};
 }
 
+function useTheme() {
+    const availableThemes = {
+        light: 'vs-light',
+        dark: 'vs-dark',
+    }
+    const selectTheme = (isLight) => isLight ? availableThemes.light : availableThemes.dark;
+    const [theme, setTheme] = useState(
+        selectTheme(window.matchMedia('(prefers-color-scheme: light)').matches)
+    );
+
+    window.matchMedia('(prefers-color-scheme: light)').addEventListener('change', event => {
+        setTheme(selectTheme(event.matches));
+    });
+
+    return theme;
+}
+
+function useResize(resizeDeps)
+{
+    const [initialized, setInitialized] = useState(false);
+    const editor = useRef();
+
+    useEffect(() => {
+        if (initialized && editor.current) {
+            editor.current.layout({});
+        }
+        setInitialized(true);
+    }, resizeDeps);
+
+    window.onresize = () => {
+        if (initialized && editor.current) {
+            editor.current.layout({});
+        }
+    }
+
+    return editor;
+}
+
 export function Editor({code, setCode, issues}) {
     const {markEditorAsInitialized} = useEditorErrorDecorator(code, issues);
+    const theme = useTheme();
 
     return (
         <CodeEditor
@@ -105,6 +144,7 @@ export function Editor({code, setCode, issues}) {
             }}
             options={{
                 minimap: {enabled: false},
+                theme,
             }}
             style={{
                 backgroundColor: "transparent",
@@ -117,7 +157,10 @@ export function Editor({code, setCode, issues}) {
     );
 }
 
-export function ReadonlyEditor({code}) {
+export function ReadonlyEditor({code, resizeDeps}) {
+    const theme = useTheme();
+    const ref = useResize(resizeDeps)
+
     return (
         <CodeEditor
             value={code}
@@ -125,6 +168,7 @@ export function ReadonlyEditor({code}) {
             options={{
                 minimap: {enabled: false},
                 readOnly: true,
+                theme,
             }}
             style={{
                 backgroundColor: "transparent",
@@ -132,6 +176,7 @@ export function ReadonlyEditor({code}) {
                 fontSize: 14,
             }}
             padding={16}
+            onMount={(editor) => {ref.current = editor}}
         />
     );
 }
