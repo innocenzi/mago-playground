@@ -184,7 +184,7 @@ body,
 .settings-panel {
     display: none;
     background: var(--color-panel);
-    overflow: hidden;
+    overflow: auto;
     transition: width 0.3s ease;
     flex-direction: column;
     border-right: var(--border-thickness) solid var(--color-border);
@@ -258,7 +258,7 @@ body,
     background: var(--color-subtle-bg);
     border-radius: var(--border-radius);
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.06);
-    overflow: hidden;
+    overflow: auto;
 }
 
 .plugin-header {
@@ -303,7 +303,7 @@ body,
 }
 
 .rule-list {
-    overflow: hidden;
+    overflow: auto;
 }
 
 .rule-item {
@@ -366,7 +366,7 @@ body,
 .editor-wrapper {
     flex: 1;
     position: relative;
-    overflow: hidden;
+    overflow: auto;
     border-bottom-left-radius: var(--border-radius);
     border-bottom-right-radius: var(--border-radius);
 }
