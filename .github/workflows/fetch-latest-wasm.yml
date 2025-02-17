@@ -1,4 +1,4 @@
-name: Fetch Latest Mago WASM
+name: Fetch latest Mago WASM
 
 on:
   schedule:
@@ -21,28 +21,18 @@ jobs:
       - name: Install curl and tar
         run: sudo apt-get update && sudo apt-get install -y curl tar
 
-      - name: Get latest release info
+      - name: Get latest release
         id: get_release
         run: |
-          RELEASE_JSON=$(curl -s https://api.github.com/repos/carthage-software/mago/releases/latest)
-          echo "RELEASE_JSON=$(echo $RELEASE_JSON | jq -c .)" >> $GITHUB_OUTPUT
-
-      - name: Parse out version and download URL
-        id: parse_release
-        run: |
-          # Using 'jq' to parse JSON (already installed on GitHub runners).
-          # If not, install it with apt-get above.
-          LATEST_VERSION=$(echo "${{ steps.get_release.outputs.RELEASE_JSON }}" | jq -r '.tag_name')
-          # The artifact name might be "mago-{version}-wasm.tar.gz",
-          # but let's assume we can construct the URL or find the asset in the array of assets.
-          DOWNLOAD_URL=$(echo "${{ steps.get_release.outputs.RELEASE_JSON }}" | jq -r '.assets[] | select(.name | test("wasm.tar.gz$")) | .browser_download_url')
-
-          echo "LATEST_VERSION=$LATEST_VERSION" >> $GITHUB_OUTPUT
-          echo "DOWNLOAD_URL=$DOWNLOAD_URL" >> $GITHUB_OUTPUT
+            RELEASE_JSON=$(curl -s https://api.github.com/repos/carthage-software/mago/releases/latest)
+            LATEST_VERSION=$(echo "$RELEASE_JSON" | jq -r '.tag_name')
+            DOWNLOAD_URL=$(echo "$RELEASE_JSON" | jq -r '.assets[] | select(.name | test("wasm.tar.gz$")) | .browser_download_url')
+            echo "LATEST_VERSION=$LATEST_VERSION" >> $GITHUB_OUTPUT
+            echo "DOWNLOAD_URL=$DOWNLOAD_URL" >> $GITHUB_OUTPUT
 
       - name: Download artifact
         run: |
-          curl -L "${{ steps.parse_release.outputs.DOWNLOAD_URL }}" -o mago-wasm.tar.gz
+          curl -L "${{ steps.get_release.outputs.DOWNLOAD_URL }}" -o mago-wasm.tar.gz
 
       - name: Extract artifact
         run: |
