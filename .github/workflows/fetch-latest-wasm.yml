@@ -13,20 +13,19 @@ jobs:
       - name: Check out this repo
         uses: actions/checkout@v3
 
-      - name: Set up Node (only necessary if you need Node for anything else)
-        uses: actions/setup-node@v3
+      - name: Set up Node
+        uses: actions/setup-node@v4
         with:
-          node-version: 16
+          node-version: latest
 
-      - name: Install tools needed (e.g. curl, tar)
+      - name: Install curl and tar
         run: sudo apt-get update && sudo apt-get install -y curl tar
 
       - name: Get latest release info
         id: get_release
         run: |
-          # Fetch release JSON
           RELEASE_JSON=$(curl -s https://api.github.com/repos/carthage-software/mago/releases/latest)
-          echo "RELEASE_JSON=$RELEASE_JSON" >> $GITHUB_OUTPUT
+          echo "RELEASE_JSON=$(echo $RELEASE_JSON | jq -c .)" >> $GITHUB_OUTPUT
 
       - name: Parse out version and download URL
         id: parse_release
@@ -50,21 +49,3 @@ jobs:
           # Remove old WASM files if needed, or keep them
           rm -rf src/services/wasm/*
           tar -xzf mago-wasm.tar.gz -C src/services/wasm
-
-      - name: Check for changes
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-
-          # Check if there's anything to commit
-          if [ -n "$(git status --porcelain)" ]; then
-            git add .
-            git commit -m "Update WASM to version ${{ steps.parse_release.outputs.LATEST_VERSION }}"
-          else
-            echo "No changes to commit"
-          fi
-
-      - name: Push changes if any
-        if: always()
-        run: |
-          git push origin HEAD:${{ github.ref_name }}
